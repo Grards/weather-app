@@ -71,8 +71,8 @@ export async function geocodingWeatherDatas(country, lat, lon, cityName, state){
         groupedDatas[date].forEach(data => {
         sectionOfMoment.innerHTML += `
             <ul class="weather__informations" data-informations="${id}">
-                <li>Hour : ${(data.dt_txt).substring(11,19)}</li>
                 <li><img src="https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png" alt="Icon of the actual weather"></li>
+                <li>Hour : ${(data.dt_txt).substring(11,19)}</li>
                 <li>Conditions : ${data.weather[0].description}</li>
                 <li>Temperature : ${data.main.temp} °C</li>
                 <li>Feels Like : ${data.main.feels_like} °C</li>
