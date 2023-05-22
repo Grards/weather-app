@@ -2,7 +2,7 @@ import { geocodingKeyAPI, unsplashKeyAPI } from "./access.js"
 
 const limit = 5 // This is the max value for returns in the API
 const states = document.getElementById("weather-states")
-
+let weatherDays = []
 
 export async function geocodingConnexion(cityName){
     const response = await fetch (`http://api.openweathermap.org/geo/1.0/direct?q=${cityName}&limit=${limit}&appid=${geocodingKeyAPI}`)
@@ -41,8 +41,6 @@ export async function geocodingWeatherDatas(country, lat, lon, cityName, state){
     const unsplash = await fetch (`https://api.unsplash.com/search/photos?query=${cityName}%20${country}&client_id=${unsplashKeyAPI}`)
     const cityPictures = await unsplash.json()
     const cityPicture = cityPictures.results[0].urls.small
-    
-    console.log(weatherDatas)
 
     datasContainer.innerHTML += `
         <h3>${cityName}</h3>
@@ -59,24 +57,45 @@ export async function geocodingWeatherDatas(country, lat, lon, cityName, state){
     const weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
 
     for(const date in groupedDatas){
-        datasContainer.innerHTML += `<ul id="${id}" class="weather" data="${weekday[actualDay]}">`
-        let ulOfMoment = document.getElementById(id)
+        datasContainer.innerHTML += `
+            <section class="weather-section" data="${weekday[actualDay]}">
+                <div class="weather__day">
+                    <h3>${weekday[actualDay]}</h3>
+                    <h4>${date}</h4>
+                </div>
+                <div class="weather__content" id="${id}">
+        `
+
+        let sectionOfMoment = document.getElementById(id)
         // let contentOfMoment = datasContainer.textContent
         groupedDatas[date].forEach(data => {
-        ulOfMoment.innerHTML += `
-            <li>Date : ${data.dt_txt}</li>
-            <li><img src="https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png" alt="Icon of the actual weather"></li>
-            <li>Conditions : ${data.weather[0].description}</li>
-            <li>Temperature : ${data.main.temp} °C</li>
-            <li>Feels Like : ${data.main.feels_like} °C</li>
-            <li>Humidity : ${data.main.humidity}%</li>
-            <li>Temp. Max : ${data.main.temp_max} °C</li>
-            <li>Temp. Min : ${data.main.temp_min} °C</li>
+        sectionOfMoment.innerHTML += `
+            <ul class="weather__informations" data-informations="${id}">
+                <li>Hour : ${(data.dt_txt).substring(11,19)}</li>
+                <li><img src="https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png" alt="Icon of the actual weather"></li>
+                <li>Conditions : ${data.weather[0].description}</li>
+                <li>Temperature : ${data.main.temp} °C</li>
+                <li>Feels Like : ${data.main.feels_like} °C</li>
+                <li>Humidity : ${data.main.humidity}%</li>
+                <li>Temp. Max : ${data.main.temp_max} °C</li>
+                <li>Temp. Min : ${data.main.temp_min} °C</li>
+            </ul>
         `
         })
-        datasContainer.innerHTML += `</ul>`
+        datasContainer.innerHTML += `
+            </div>
+        </section>`
         ++id
         actualDay > 5 ? actualDay = 0 : ++actualDay 
+    }
+
+    weatherDays = document.getElementsByClassName("weather__day")
+    for(let day of weatherDays){
+        day.addEventListener("click", event => {
+            const contentToToggle = event.target.parentElement.nextElementSibling
+            console.log(contentToToggle)
+            contentToToggle.classList.toggle("toggleVisibility")
+        })
     }
 }
 
@@ -94,3 +113,7 @@ function groupPerDate(datasList) {
     });
     return datasPerDate;
 }
+
+
+
+

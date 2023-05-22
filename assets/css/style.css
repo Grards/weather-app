@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap");
 *, *:before, *:after {
   box-sizing: border-box;
 }
@@ -40,4 +41,56 @@ blockquote:before, blockquote:after, q:before, q:after {
 table {
   border-collapse: collapse;
   border-spacing: 0;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  font-family: "Roboto", sans-serif;
+}
+main h1 {
+  font-size: 5vh;
+  margin-bottom: 5px;
+}
+main h2 {
+  font-size: 3vh;
+  margin-bottom: 15px;
+}
+main form {
+  margin: 20px 0;
+}
+main form ul {
+  margin: 10px;
+}
+main article {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+  width: 100%;
+  box-sizing: border-box;
+}
+main article section {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+main article section .weather__day {
+  background-color: green;
+  text-align: center;
+  color: white;
+  padding: 10px;
+  cursor: pointer;
+  margin: 10px;
+  width: 100%;
+}
+main article section .weather__content {
+  display: none;
+}
+
+.toggleVisibility {
+  display: block !important;
 }/*# sourceMappingURL=style.css.map */

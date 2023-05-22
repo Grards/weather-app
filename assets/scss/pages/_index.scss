@@ -1,3 +1,56 @@
-// input[type="radio"]:checked{
+main{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    font-family: 'Roboto', sans-serif;
+    h1{
+        font-size: 5vh;
+        margin-bottom: 5px;
+    }
+    h2{
+        font-size: 3vh;
+        margin-bottom: 15px;
+    }
+    form{
+        margin: 20px 0;
+        ul{
+            margin: 10px;
+        }
+    }
+    article{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        flex-wrap: wrap;
+        width: 100%;
+        box-sizing: border-box;
+        section{
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            .weather__day{
+                background-color: green;
+                text-align: center;
+                color: white;
+                padding: 10px;
+                cursor: pointer;
+                margin: 10px;
+                width: 100%;
+            }
+            .weather__content{
+                display: none;
+            }
+        }
+    }
+}
 
+.toggleVisibility{
+    display: block !important;
+}
+
+// #myChart{
+//     width: 100%;
+//     height: 400px;
 // }
