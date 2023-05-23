@@ -1,19 +1,41 @@
-import Chart from "../../../node_modules/chart.js/auto";
+export function weatherGraph(infos){
+  const ctx = document.getElementsByClassName('weather-charts');
+  console.log(infos)
 
-export function testChart(){
-    const ctx = document.getElementById('myChart');
+  for(let chart of ctx){
+    let hours = []
+    let tempMin = []
+    let tempMax = []
+    let tempAverage =[]
 
-    new Chart(ctx, {
-      type: 'bar',
+    for(let element of infos){
+      if(element.id == chart.parentElement.id){
+        hours.push(element.hour)
+        tempAverage.push((element.tempMin + element.tempMax)/2)
+      }
+    }
+
+    new Chart(chart, {
+      type: 'line',
       data: {
-        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-        datasets: [{
-          label: '# of Votes',
-          data: [12, 19, 3, 5, 2, 3],
-          borderWidth: 1
-        }]
+        labels: hours,
+        datasets: [
+          {
+            label: 'Average Temperatures of the day',
+            data: tempAverage,
+            borderWidth: 2
+          }
+        ]
       },
       options: {
+        animations: {
+          tension: {
+            duration: 1000,
+            easing: 'linear',
+            from: 1,
+            to: 0
+          }
+        },
         scales: {
           y: {
             beginAtZero: true
@@ -21,4 +43,6 @@ export function testChart(){
         }
       }
     });
+  }
+  
 }

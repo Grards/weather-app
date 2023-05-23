@@ -1,8 +1,8 @@
 import { geocodingKeyAPI, unsplashKeyAPI } from "./access.js"
+import { weatherGraph } from "./chart.js"
 
 const limit = 5 // This is the max value for returns in the API
 const states = document.getElementById("weather-states")
-let weatherDays = []
 
 export async function geocodingConnexion(cityName){
     const response = await fetch (`http://api.openweathermap.org/geo/1.0/direct?q=${cityName}&limit=${limit}&appid=${geocodingKeyAPI}`)
@@ -50,53 +50,75 @@ export async function geocodingWeatherDatas(country, lat, lon, cityName, state){
     `
 
     const groupedDatas = groupPerDate(weatherDatas.list);
+    console.log(weatherDatas)
 
     let id = 0
+    let infosForGraph = []
     const actualDate = new Date()
     let actualDay = actualDate.getDay()
     const weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
 
     for(const date in groupedDatas){
         datasContainer.innerHTML += `
-            <section class="weather-section" data="${weekday[actualDay]}">
+            <section class="weather-section" data-actualday="${weekday[actualDay]}">
                 <div class="weather__day">
                     <h3>${weekday[actualDay]}</h3>
                     <h4>${date}</h4>
                 </div>
-                <div class="weather__content" id="${id}">
+                <div id="${id}" class="weather__content">
+                    <canvas class="weather-charts"></canvas>
         `
 
-        let sectionOfMoment = document.getElementById(id)
-        // let contentOfMoment = datasContainer.textContent
+        let contentOfMoment = document.getElementById(id)
         groupedDatas[date].forEach(data => {
-        sectionOfMoment.innerHTML += `
-            <ul class="weather__informations" data-informations="${id}">
-                <li><img src="https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png" alt="Icon of the actual weather"></li>
-                <li>Hour : ${(data.dt_txt).substring(11,19)}</li>
-                <li>Conditions : ${data.weather[0].description}</li>
-                <li>Temperature : ${data.main.temp} °C</li>
-                <li>Feels Like : ${data.main.feels_like} °C</li>
-                <li>Humidity : ${data.main.humidity}%</li>
-                <li>Temp. Max : ${data.main.temp_max} °C</li>
-                <li>Temp. Min : ${data.main.temp_min} °C</li>
-            </ul>
-        `
+            contentOfMoment.innerHTML += `
+                <ul class="weather__informations" data-id="${id}" data-day=${actualDay}>
+                    <li><img src="https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png" alt="Icon of the actual weather"></li>
+                    <li>Hour : ${(data.dt_txt).substring(11,19)}</li>
+                    <li>Conditions : ${data.weather[0].description}</li>
+                    <li>Temperature : ${data.main.temp} °C</li>
+                    <li>Feels Like : ${data.main.feels_like} °C</li>
+                    <li>Humidity : ${data.main.humidity}%</li>
+                    <li>Temp. Max : ${data.main.temp_max} °C</li>
+                    <li>Temp. Min : ${data.main.temp_min} °C</li>
+                </ul>
+            `
+            let objectForGraph = {
+                id: id,
+                day : weekday[actualDay],
+                hour: (data.dt_txt).substring(11,19),
+                tempMin : data.main.temp_min,
+                tempMax : data.main.temp_max
+            }
+            infosForGraph.push(objectForGraph)
         })
         datasContainer.innerHTML += `
-            </div>
-        </section>`
+                </div>
+            </section>
+        `
         ++id
         actualDay > 5 ? actualDay = 0 : ++actualDay 
+        
     }
+    weatherGraph(infosForGraph)
 
-    weatherDays = document.getElementsByClassName("weather__day")
+    const weatherDays = document.getElementsByClassName("weather__day")
     for(let day of weatherDays){
         day.addEventListener("click", event => {
             const contentToToggle = event.target.parentElement.nextElementSibling
-            console.log(contentToToggle)
             contentToToggle.classList.toggle("toggleVisibility")
         })
     }
+
+    // let daysArray = []
+    // const daysForGraph = document.getElementsByClassName("weather-section")
+    // for(let day of daysForGraph){
+    //     console.log(day)
+    //     daysArray.push(day.dataset.actualday)
+    //     console.log(day.dataset.actualday)
+    // }
+
+    // weatherGraph(daysArray)
 }
 
 function groupPerDate(datasList) {
