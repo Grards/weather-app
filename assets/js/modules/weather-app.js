@@ -5,7 +5,8 @@ const limit = 5 // This is the max value for returns in the API
 const states = document.getElementById("weather-states")
 
 export async function geocodingConnexion(cityName){
-    const response = await fetch (`http://api.openweathermap.org/geo/1.0/direct?q=${cityName}&limit=${limit}&appid=${geocodingKeyAPI}`)
+    
+    const response = await fetch (`http://api.openweathermap.org/geo/1.0/direct?q=${cityName ? cityName : cityName = " "}&limit=${limit}&appid=${geocodingKeyAPI}`)
     const city = await response.json()
     geocodingPotentialStates(city)
 }
@@ -48,15 +49,14 @@ export async function geocodingWeatherDatas(country, lat, lon, cityName, state){
         <h4>${country} ${state === "undefined" ? "" : "- " + state}</h4>
         <img src="${cityPicture}" class="city-img" alt="Unsplash image of ${weatherDatas.city.name}">
     `
-
+    
     const groupedDatas = groupPerDate(weatherDatas.list);
-    console.log(weatherDatas)
-
-    let id = 0
-    let infosForGraph = []
     const actualDate = new Date()
-    let actualDay = actualDate.getDay()
     const weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+    
+    let id = Date.now()
+    let infosForGraph = []
+    let actualDay = actualDate.getDay()
 
     for(const date in groupedDatas){
         datasContainer.innerHTML += `
@@ -66,7 +66,7 @@ export async function geocodingWeatherDatas(country, lat, lon, cityName, state){
                     <h4>${date}</h4>
                 </div>
                 <div id="${id}" class="weather__content">
-                    <canvas class="weather-charts"></canvas>
+                    <canvas class="weather-charts new-chart"></canvas>
         `
 
         let contentOfMoment = document.getElementById(id)
@@ -109,16 +109,6 @@ export async function geocodingWeatherDatas(country, lat, lon, cityName, state){
             contentToToggle.classList.toggle("toggleVisibility")
         })
     }
-
-    // let daysArray = []
-    // const daysForGraph = document.getElementsByClassName("weather-section")
-    // for(let day of daysForGraph){
-    //     console.log(day)
-    //     daysArray.push(day.dataset.actualday)
-    //     console.log(day.dataset.actualday)
-    // }
-
-    // weatherGraph(daysArray)
 }
 
 function groupPerDate(datasList) {

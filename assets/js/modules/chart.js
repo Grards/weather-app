@@ -1,6 +1,5 @@
 export function weatherGraph(infos){
   const ctx = document.getElementsByClassName('weather-charts');
-  console.log(infos)
 
   for(let chart of ctx){
     let hours = []
@@ -15,7 +14,7 @@ export function weatherGraph(infos){
       }
     }
 
-    new Chart(chart, {
+    const graph = new Chart(chart, {
       type: 'line',
       data: {
         labels: hours,
@@ -43,6 +42,16 @@ export function weatherGraph(infos){
         }
       }
     });
+    // console.log(graph.data)
+    // addData(graph.canvas, graph.data.labels, graph.data)
+    
   }
-  
 }
+
+// function addData(chart, label, data) {
+//   chart.data.labels.push(label);
+//   chart.data.datasets.forEach((dataset) => {
+//       dataset.data.push(data);
+//   });
+//   chart.update();
+// }
