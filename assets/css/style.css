@@ -43,23 +43,39 @@ table {
   border-spacing: 0;
 }
 
+* {
+  font-family: "Roboto", sans-serif;
+}
+
+header {
+  text-align: center;
+  padding: 20px;
+  background-color: rgb(25, 92, 192);
+  color: white;
+}
+header h1 {
+  font-size: 4.5vh;
+  margin-bottom: 5px;
+  text-transform: uppercase;
+  padding: 0;
+}
+header h2 {
+  font-size: 2.5vh;
+  margin-bottom: 15px;
+  margin: 0;
+}
+
 main {
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 20px;
-  font-family: "Roboto", sans-serif;
-}
-main h1 {
-  font-size: 5vh;
-  margin-bottom: 5px;
-}
-main h2 {
-  font-size: 3vh;
-  margin-bottom: 15px;
 }
 main form {
   margin: 20px 0;
+}
+main form label {
+  font-size: 1.5vh;
 }
 main form ul {
   margin: 10px;
@@ -71,6 +87,18 @@ main article {
   flex-wrap: wrap;
   width: 100%;
   box-sizing: border-box;
+  overflow: hidden;
+}
+main article h3, main article h4, main article p {
+  width: 100%;
+  text-align: center;
+}
+main article h3 {
+  font-size: 2.7vh;
+}
+main article .city-img {
+  width: 100%;
+  margin: 10px 0;
 }
 main article section {
   width: 100%;
@@ -98,10 +126,6 @@ main article section .weather__content .weather__informations {
   align-items: center;
   width: 100%;
   margin: 10px 0 30px 0;
-  overflow: hidden;
-}
-main article section .weather__content .weather__informations img {
-  width: auto;
 }
 
 .toggleVisibility {

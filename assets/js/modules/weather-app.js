@@ -46,7 +46,7 @@ export async function geocodingWeatherDatas(country, lat, lon, cityName, state){
         <h3>${cityName}</h3>
         <p>${weatherDatas.city.name}</p>
         <h4>${country} ${state === "undefined" ? "" : "- " + state}</h4>
-        <img src="${cityPicture}" alt="Unsplash image of ${weatherDatas.city.name}">
+        <img src="${cityPicture}" class="city-img" alt="Unsplash image of ${weatherDatas.city.name}">
     `
 
     const groupedDatas = groupPerDate(weatherDatas.list);
