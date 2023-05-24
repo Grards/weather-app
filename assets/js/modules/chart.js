@@ -1,14 +1,16 @@
 let graph = ""
 
+/**
+ * Show all graph with the graph.js API
+ * @param {array} chartStorage 
+ */
 export function weatherGraph(chartStorage){
   const ctx = document.getElementsByClassName('weather-charts')
-  // let infos = JSON.parse(chartStorage)
   console.log(chartStorage)
 
   for(let chart of ctx){
     let hours = []
     let tempAverage =[]
-
     
     chartStorage.forEach(element => {
       if(element.id == chart.parentElement.id){
@@ -16,12 +18,6 @@ export function weatherGraph(chartStorage){
         tempAverage.push((element.tempMin + element.tempMax)/2)
       }
     });
-    // for(let element of infos){
-    //   if(element.id == chart.parentElement.id){
-    //     hours.push(element.hour)
-    //     tempAverage.push((element.tempMin + element.tempMax)/2)
-    //   }
-    // }
 
     graph = new Chart(chart, {
       type: 'line',
@@ -51,6 +47,5 @@ export function weatherGraph(chartStorage){
         }
       }
     });
-    // graph.destroy()
   }
 }

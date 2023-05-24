@@ -1,10 +1,11 @@
-import { geocodingConnexion, geocodingWeatherDatas } from "./modules/weather-app.js";
+import { refreshDatas } from "./modules/local-storage.js";
+import { geocodingPotentialCity, geocodingWeatherDatas } from "./modules/weather-app.js";
 
 const weatherForm = document.getElementById("weather-form")
 const weatherCity  = document.getElementById("weather-city")
 
 weatherCity.addEventListener("keyup", event => {
-    geocodingConnexion(weatherCity.value)
+    geocodingPotentialCity(weatherCity.value)
 })
 
 weatherForm.addEventListener("click", event => {
@@ -18,3 +19,5 @@ weatherForm.addEventListener("click", event => {
         }
     }
 })
+
+refreshDatas()

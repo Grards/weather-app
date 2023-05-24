@@ -1,17 +1,25 @@
 import { geocodingKeyAPI, unsplashKeyAPI } from "./access.js"
-import { weatherGraph } from "./chart.js"
-import { chartStorage } from "./local-storage.js"
+import { storeGraphs } from "./local-storage.js"
 
-const limit = 5 // This is the max value for returns in the API
+const limit = 5 // 5 is the max value of returns authorized by the API, per request.
 const states = document.getElementById("weather-states")
 
-export async function geocodingConnexion(cityName){
-    
+/**
+ * Get the names of the cities that match the word encoded in the dedicated text input.
+ * @param {string} cityName 
+ */
+export async function geocodingPotentialCity(cityName){
     const response = await fetch (`http://api.openweathermap.org/geo/1.0/direct?q=${cityName ? cityName : cityName = " "}&limit=${limit}&appid=${geocodingKeyAPI}`)
     const city = await response.json()
     geocodingPotentialStates(city)
 }
 
+/**
+ * Show the cities who match with the research. 
+ * Each city have his own state.
+ * The user must now select a radio button and confirm his research who contain the name of the city and his state.
+ * @param {string} cities 
+ */
 function geocodingPotentialStates(cities){
     if(cities.length > 0){
         states.innerHTML = "<legend>Select a state for your research:</legend>"
@@ -34,6 +42,18 @@ function geocodingPotentialStates(cities){
     }
 }
 
+/**
+ * Return the datas from the request to OpenWeatherApp API. 
+ * The request uses "latitudes" and "longitudes".
+ * 
+ * The other request return an image of the city from the Unsplash API.
+ * The request uses the name of the city and his country to find an adequate response.
+ * @param {string} country 
+ * @param {double} lat 
+ * @param {double} lon 
+ * @param {string} cityName 
+ * @param {string} state 
+ */
 export async function geocodingWeatherDatas(country, lat, lon, cityName, state){
     const datasContainer = document.getElementById("datas-container")
     
@@ -51,7 +71,7 @@ export async function geocodingWeatherDatas(country, lat, lon, cityName, state){
         <img src="${cityPicture}" class="city-img" alt="Unsplash image of ${weatherDatas.city.name}">
     `
     
-    const groupedDatas = groupPerDate(weatherDatas.list);
+    const groupedDatas = groupPerDate(weatherDatas.list); // .list returns a list of objects with multiple datas, since the OpenWeatherMap API.
     const actualDate = new Date()
     const weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
     
@@ -69,7 +89,6 @@ export async function geocodingWeatherDatas(country, lat, lon, cityName, state){
                 <div id="${id}" class="weather__content">
                     <canvas class="weather-charts new-chart"></canvas>
         `
-
         let contentOfMoment = document.getElementById(id)
         groupedDatas[date].forEach(data => {
             contentOfMoment.innerHTML += `
@@ -101,7 +120,7 @@ export async function geocodingWeatherDatas(country, lat, lon, cityName, state){
         ++id
         actualDay > 5 ? actualDay = 0 : ++actualDay 
     }// weatherGraph(graphArray)
-    chartStorage(graphArray)
+    storeGraphs(graphArray)
     
 
     const weatherDays = document.getElementsByClassName("weather__day")
@@ -113,6 +132,14 @@ export async function geocodingWeatherDatas(country, lat, lon, cityName, state){
     }
 }
 
+
+/**
+ * Uses a list of objects of datas and group them by date.
+ * Each date will be an array.
+ * And this array will contain the correspondants weather datas.
+ * @param {list} datasList 
+ * @returns 
+ */
 function groupPerDate(datasList) {
     const datasPerDate = {};
 
