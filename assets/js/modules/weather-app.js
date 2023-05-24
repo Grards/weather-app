@@ -42,13 +42,6 @@ function PotentialStates(cities){
     }
 }
 
-export async function getWeather(lat, lon){
-    const response2 = await fetch (`https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${openWeatherKeyAPI}&units=metric`)
-    const weatherDatas = await response2.json()
-
-    return weatherDatas
-}
-
 /**
  * Return the datas from the request to OpenWeatherApp API. 
  * The request uses "latitudes" and "longitudes".
@@ -64,8 +57,8 @@ export async function getWeather(lat, lon){
 export async function WeatherDatas(country, lat, lon, cityName, state){
     const datasContainer = document.getElementById("datas-container")
     
-    const weatherDatas = getWeather(lat, lon)
-    console.log(weatherDatas)
+    const response2 = await fetch (`https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${openWeatherKeyAPI}&units=metric`)
+    const weatherDatas = await response2.json()
 
     const unsplash = await fetch (`https://api.unsplash.com/search/photos?query=${cityName}%20${country}&client_id=${unsplashKeyAPI}`)
     const cityPictures = await unsplash.json()
