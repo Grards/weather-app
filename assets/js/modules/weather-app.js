@@ -1,5 +1,6 @@
 import { geocodingKeyAPI, unsplashKeyAPI } from "./access.js"
 import { weatherGraph } from "./chart.js"
+import { chartStorage } from "./local-storage.js"
 
 const limit = 5 // This is the max value for returns in the API
 const states = document.getElementById("weather-states")
@@ -55,7 +56,7 @@ export async function geocodingWeatherDatas(country, lat, lon, cityName, state){
     const weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
     
     let id = Date.now()
-    let infosForGraph = []
+    let graphArray = []
     let actualDay = actualDate.getDay()
 
     for(const date in groupedDatas){
@@ -90,7 +91,8 @@ export async function geocodingWeatherDatas(country, lat, lon, cityName, state){
                 tempMin : data.main.temp_min,
                 tempMax : data.main.temp_max
             }
-            infosForGraph.push(objectForGraph)
+            graphArray.push(objectForGraph)
+            
         })
         datasContainer.innerHTML += `
                 </div>
@@ -98,9 +100,9 @@ export async function geocodingWeatherDatas(country, lat, lon, cityName, state){
         `
         ++id
         actualDay > 5 ? actualDay = 0 : ++actualDay 
-        
-    }
-    weatherGraph(infosForGraph)
+    }// weatherGraph(graphArray)
+    chartStorage(graphArray)
+    
 
     const weatherDays = document.getElementsByClassName("weather__day")
     for(let day of weatherDays){

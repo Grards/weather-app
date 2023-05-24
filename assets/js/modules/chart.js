@@ -1,20 +1,29 @@
-export function weatherGraph(infos){
-  const ctx = document.getElementsByClassName('weather-charts');
+let graph = ""
+
+export function weatherGraph(chartStorage){
+  const ctx = document.getElementsByClassName('weather-charts')
+  // let infos = JSON.parse(chartStorage)
+  console.log(chartStorage)
 
   for(let chart of ctx){
     let hours = []
-    let tempMin = []
-    let tempMax = []
     let tempAverage =[]
 
-    for(let element of infos){
+    
+    chartStorage.forEach(element => {
       if(element.id == chart.parentElement.id){
         hours.push(element.hour)
         tempAverage.push((element.tempMin + element.tempMax)/2)
       }
-    }
+    });
+    // for(let element of infos){
+    //   if(element.id == chart.parentElement.id){
+    //     hours.push(element.hour)
+    //     tempAverage.push((element.tempMin + element.tempMax)/2)
+    //   }
+    // }
 
-    const graph = new Chart(chart, {
+    graph = new Chart(chart, {
       type: 'line',
       data: {
         labels: hours,
@@ -42,16 +51,6 @@ export function weatherGraph(infos){
         }
       }
     });
-    // console.log(graph.data)
-    // addData(graph.canvas, graph.data.labels, graph.data)
-    
+    // graph.destroy()
   }
 }
-
-// function addData(chart, label, data) {
-//   chart.data.labels.push(label);
-//   chart.data.datasets.forEach((dataset) => {
-//       dataset.data.push(data);
-//   });
-//   chart.update();
-// }
