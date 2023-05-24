@@ -9,7 +9,7 @@ const states = document.getElementById("weather-states")
  * @param {string} cityName 
  */
 export async function PotentialCity(cityName){
-    const response = await fetch (`http://api.openweathermap.org/geo/1.0/direct?q=${cityName ? cityName : cityName = " "}&limit=${limit}&appid=${openWeatherKeyAPI}`)
+    const response = await fetch (`https://api.openweathermap.org/geo/1.0/direct?q=${cityName ? cityName : cityName = " "}&limit=${limit}&appid=${openWeatherKeyAPI}`)
     const city = await response.json()
     PotentialStates(city)
 }
