@@ -1,4 +1,4 @@
-import { geocodingKeyAPI, unsplashKeyAPI } from "./access.js"
+import { openWeatherKeyAPI, unsplashKeyAPI } from "./access.js"
 import { storeGraphs } from "./local-storage.js"
 
 const limit = 5 // 5 is the max value of returns authorized by the API, per request.
@@ -8,10 +8,10 @@ const states = document.getElementById("weather-states")
  * Get the names of the cities that match the word encoded in the dedicated text input.
  * @param {string} cityName 
  */
-export async function geocodingPotentialCity(cityName){
-    const response = await fetch (`http://api.openweathermap.org/geo/1.0/direct?q=${cityName ? cityName : cityName = " "}&limit=${limit}&appid=${geocodingKeyAPI}`)
+export async function PotentialCity(cityName){
+    const response = await fetch (`http://api.openweathermap.org/geo/1.0/direct?q=${cityName ? cityName : cityName = " "}&limit=${limit}&appid=${openWeatherKeyAPI}`)
     const city = await response.json()
-    geocodingPotentialStates(city)
+    PotentialStates(city)
 }
 
 /**
@@ -20,7 +20,7 @@ export async function geocodingPotentialCity(cityName){
  * The user must now select a radio button and confirm his research who contain the name of the city and his state.
  * @param {string} cities 
  */
-function geocodingPotentialStates(cities){
+function PotentialStates(cities){
     if(cities.length > 0){
         states.innerHTML = "<legend>Select a state for your research:</legend>"
         let idTemp = 0
@@ -42,6 +42,13 @@ function geocodingPotentialStates(cities){
     }
 }
 
+export async function getWeather(lat, lon){
+    const response2 = await fetch (`https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${openWeatherKeyAPI}&units=metric`)
+    const weatherDatas = await response2.json()
+
+    return weatherDatas
+}
+
 /**
  * Return the datas from the request to OpenWeatherApp API. 
  * The request uses "latitudes" and "longitudes".
@@ -54,11 +61,11 @@ function geocodingPotentialStates(cities){
  * @param {string} cityName 
  * @param {string} state 
  */
-export async function geocodingWeatherDatas(country, lat, lon, cityName, state){
+export async function WeatherDatas(country, lat, lon, cityName, state){
     const datasContainer = document.getElementById("datas-container")
     
-    const response2 = await fetch (`https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${geocodingKeyAPI}&units=metric`)
-    const weatherDatas = await response2.json()
+    const weatherDatas = getWeather(lat, lon)
+    console.log(weatherDatas)
 
     const unsplash = await fetch (`https://api.unsplash.com/search/photos?query=${cityName}%20${country}&client_id=${unsplashKeyAPI}`)
     const cityPictures = await unsplash.json()
